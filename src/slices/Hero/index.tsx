@@ -10,6 +10,8 @@ import { Bounded } from "@/components/Bounded";
 import { Button } from "@/components/button";
 import { TextSplitter } from "@/components/textSplitter";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { View } from "@react-three/drei";
+import Scene from "./Scene";
 
 
 gsap.registerPlugin(useGSAP , ScrollTrigger);
@@ -88,15 +90,17 @@ const Hero: FC<HeroProps> = ({ slice }) => {
   });
 
 
-
-
-
   return (
     <Bounded
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       className="hero opacity-0"
     >
+
+      <View className="hero-scene pointer-events-none sticky top-0 z-50 -mt-[100vh] hidden h-screen w-screen md:block">
+        <Scene />
+      </View>
+
       <div className="grid">
         <div className="grid h-screen place-items-center ">
           <div className="grid auto-rows-min place-items-center text-center">
