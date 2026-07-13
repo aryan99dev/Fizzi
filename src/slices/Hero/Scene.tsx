@@ -2,17 +2,18 @@
 
 import { useRef } from "react";
 import FloatingCan from "@/components/FloatingCan";
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment,  } from "@react-three/drei";
 import { Group } from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useStore } from "@/hooks/useStore";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-type Props = {}
 
-export default function Scene({ }: Props) {
+export default function Scene() {
+  const isReady = useStore((state) => state.isReady)
 
   const can1Ref = useRef<Group>(null);
   const can2Ref = useRef<Group>(null);
@@ -36,6 +37,8 @@ export default function Scene({ }: Props) {
       !groupRef.current
     ) return;
 
+    isReady();
+
     gsap.set(can1Ref.current.position, { x: -1.5 })
     gsap.set(can1Ref.current.rotation, { z: -0.5 })
 
@@ -55,10 +58,12 @@ export default function Scene({ }: Props) {
       }
     })
 
-    introTl.from(can1GroupRef.current.position, { y: -5, x: 1 }, 0)
-    introTl.from(can1GroupRef.current.rotation, { z: 3 }, 0)
-    introTl.from(can2GroupRef.current.position, { y: 5, x: 1 }, 0)
-    introTl.from(can2GroupRef.current.rotation, { z: 3 }, 0)
+    if (window.scrollY < 20){
+      introTl.from(can1GroupRef.current.position, { y: -5, x: 1 }, 0)
+      introTl.from(can1GroupRef.current.rotation, { z: 3 }, 0)
+      introTl.from(can2GroupRef.current.position, { y: 5, x: 1 }, 0)
+      introTl.from(can2GroupRef.current.rotation, { z: 3 }, 0)
+    }
 
     const scrollTl = gsap.timeline({
       defaults: {
